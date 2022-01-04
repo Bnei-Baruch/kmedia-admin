@@ -1,8 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router';
-import { Button, Header, Segment, Table } from 'semantic-ui-react';
-import { changeBookmarkStatus, getBookmarks } from '../../api';
-import { AuthContext } from '../../App';
+import React, { useState } from 'react';
+import { Button, Label, Table } from 'semantic-ui-react';
 
 const List = ({ setStatus, items = [] }) => {
   const [err, setErr] = useState({});
@@ -13,17 +10,22 @@ const List = ({ setStatus, items = [] }) => {
       setErr(err);
     }
 
-    setStatus(id, accepted).catch(err => {
-      err[id] = err;
+    setStatus(id, accepted).catch(e => {
+      err[id] = e;
       setErr(err);
     });
   };
 
   const renderItem = x => {
-    const { id, uid, name, accepted, tag_uids } = x;
+    const { id, uid, name, author, accepted, tag_uids } = x;
     return (
-      <Table.Row negative={accepted === false} positive={accepted === true} key={id}>
-        <Table.Cell collapsing>
+      <Table.Row
+        key={id}
+        negative={accepted === false}
+        positive={accepted === true}
+      >
+        <Table.Cell>
+          {err[id] && <Label color="red" ribbon content={err[id]} />}
           {uid}
         </Table.Cell>
         <Table.Cell collapsing>
@@ -31,6 +33,9 @@ const List = ({ setStatus, items = [] }) => {
         </Table.Cell>
         <Table.Cell>
           {name}
+        </Table.Cell>
+        <Table.Cell>
+          {author}
         </Table.Cell>
         <Table.Cell collapsing>
           <Button
@@ -54,22 +59,25 @@ const List = ({ setStatus, items = [] }) => {
     <Table celled>
       <Table.Header>
         <Table.Row>
-          <Table.Cell collapsing>
+          <Table.HeaderCell collapsing>
             UID
-          </Table.Cell>
-          <Table.Cell collapsing>
+          </Table.HeaderCell>
+          <Table.HeaderCell collapsing>
             Tags
-          </Table.Cell>
-          <Table.Cell>
+          </Table.HeaderCell>
+          <Table.HeaderCell>
             Name
-          </Table.Cell>
-          <Table.Cell collapsing>
+          </Table.HeaderCell>
+          <Table.HeaderCell>
+            Author
+          </Table.HeaderCell>
+          <Table.HeaderCell collapsing>
             Actions
-          </Table.Cell>
+          </Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {items.map(renderItem)}
+        {items?.map(renderItem)}
       </Table.Body>
     </Table>
   );

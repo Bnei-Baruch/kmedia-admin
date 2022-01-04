@@ -6,8 +6,6 @@ const Login = () => {
 
   const login = () => kc.login();
 
-  const logout = () => kc.logout();
-
   return (
     <Segment>
       <Button

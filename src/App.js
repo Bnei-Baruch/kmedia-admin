@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import './App.css';
 import { getUser } from './components/UserManagement';
-import Bookmarks from './components/bookmarks/Page';
+import Labels from './components/labels/Page';
 import Login from './components/Login';
 
 export const AuthContext = React.createContext(null);
@@ -22,7 +22,7 @@ const App = () => {
             <BrowserRouter>
               <AuthContext.Provider value={token}>
                 <Routes>
-                  <Route path="*" element={<Bookmarks />} />
+                  <Route path="*" element={<Labels />} />
                 </Routes>
               </AuthContext.Provider>
             </BrowserRouter>
